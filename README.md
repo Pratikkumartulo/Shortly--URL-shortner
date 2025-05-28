@@ -43,7 +43,7 @@ Some of its screenshots
 ### 1. Clone the Repository
 
 ```bash
-git clone https://github.com/your-username/shortly.git
+git clone https://github.com/Pratikkumartulo/Shortly--URL-shortner.git
 cd shortly
 ```
 
