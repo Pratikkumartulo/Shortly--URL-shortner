@@ -49,7 +49,7 @@ cd shortly
 
 ### 2. Set up the Backend
 ```bash
-cd backend
+cd Backend
 npm install
 npx nodemon app.js
 ```
@@ -62,7 +62,7 @@ JWT_SECRET = your_jwt_secret
 ```
 ### 3. Set up the Frontend
 ```bash
-cd frontend
+cd Frontend
 npm install
 npm run dev
 ```
