@@ -4,7 +4,6 @@ import { findUrlFromShort } from "../dao/shortUrl.js";
 export const createShortUrl = async (req,res)=>{
     const {url,slug} = req.body;
     let short_Url;
-    console.log("Helllo", req.user);
     if(req.user){
         short_Url = await saveShortUrlWithUser(url,req.user._id,slug);
     }else{

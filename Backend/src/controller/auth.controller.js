@@ -19,8 +19,6 @@ export const login_user = async (req, res) => {
 
   const userObj = { ...user };
   delete userObj.password;
-
-  console.log("User object after deletion:", userObj);
   res.status(200).json(userObj);
 };
 

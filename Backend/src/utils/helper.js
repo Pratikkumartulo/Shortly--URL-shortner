@@ -17,9 +17,7 @@ export const generateToken = (userId) => {
 
 export const verifyToken = (token) => {
     try {
-        console.log("Verifying token:", token);
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
-        console.log(decoded);
         return decoded;
     } catch (error) {
         if (error instanceof jwt.TokenExpiredError) {

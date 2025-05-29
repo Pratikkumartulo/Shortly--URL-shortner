@@ -26,7 +26,6 @@ export const loginUser = async (email, password) => {
         if (!isMatch) {
             throw new AppError('Invalid User Credentials', 404);
         }
-        console.log("user",user)
         const token = generateToken(user._id);
         return { user, token };
     }catch(error){
