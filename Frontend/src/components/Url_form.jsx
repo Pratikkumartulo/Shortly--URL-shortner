@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { getShortUrl } from '../api/short_url.api';
 import { queryClient } from '../main';
@@ -8,14 +8,25 @@ const Url_form = () => {
   const [customUrl, setCustomUrl] = useState('');
   const [shortUrl, setShortUrl] = useState('');
   const [copied, setCopied] = useState(false);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   // Get user from redux store
-  const user = useSelector((state) => state.user.user);
+  const { user, isLoggedin } = useSelector((state) => state.user);
+  
+  // Update authentication state when Redux state changes
+  useEffect(() => {
+    setIsAuthenticated(isLoggedin && user);
+    
+    // If user logs out, clear the custom URL field
+    if (!isLoggedin || !user) {
+      setCustomUrl('');
+    }
+  }, [user, isLoggedin]);
 
   const HandleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const data = await getShortUrl(url, user && customUrl ? customUrl : undefined);
+      const data = await getShortUrl(url, isAuthenticated && customUrl ? customUrl : undefined);
       setShortUrl(data);
       queryClient.invalidateQueries({ queryKey: ['userUrls'] });
     } catch (err) {
@@ -42,7 +53,7 @@ const Url_form = () => {
             className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-400 focus:outline-none"
           />
           {/* Show custom URL input only if user is signed in */}
-          {user && (
+          {isAuthenticated && (
             <input
               type="text"
               placeholder="Custom short URL (optional, e.g. my-link)"
