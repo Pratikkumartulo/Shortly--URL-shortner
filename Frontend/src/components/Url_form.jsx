@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { getShortUrl } from '../api/short_url.api';
 import { queryClient } from '../main';
+import { toast } from 'react-toastify';
 
 const Url_form = () => {
   const [url, setUrl] = useState('');
@@ -15,11 +16,19 @@ const Url_form = () => {
   const HandleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const data = await getShortUrl(url, user && customUrl ? customUrl : undefined);
-      setShortUrl(data);
+      let newShortUrl = await getShortUrl(url, user && customUrl ? customUrl : undefined);
+      if (newShortUrl && !/^https?:\/\//i.test(newShortUrl)) {
+        if (newShortUrl.startsWith("undefined")) {
+          newShortUrl = newShortUrl.substring("undefined".length);
+        }
+        newShortUrl = window.location.origin + '/' + newShortUrl;
+      }
+      setShortUrl(newShortUrl);
       queryClient.invalidateQueries({ queryKey: ['userUrls'] });
+      toast.success("URL shortened successfully!");
     } catch (err) {
       console.error("Failed to shorten URL:", err);
+      toast.error("Failed to shorten URL. Please try again.");
     }
   };
 
